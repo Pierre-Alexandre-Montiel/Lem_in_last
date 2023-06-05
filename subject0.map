@@ -1,0 +1,13 @@
+2
+yy 0 2
+##start
+ww 2 0
+##end
+aa 2 6
+ee 4 2
+oo 4 4
+ww-yy
+ww-ee
+ee-oo
+oo-aa
+aa-yy
