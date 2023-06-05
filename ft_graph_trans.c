@@ -63,11 +63,13 @@ void DFS_2(t_p **root, t_matrix *g , int src, int dest, bool *v, int *path, int 
 		while (i < pathLen)
 		{
     		printf("[LEN] =%i\n", len);
+    		printf("[PATH I] =%i\n", path[i]);
 			add_node_list(&sol[len], path[i]);
 			//p->paths[len][i] = path[i];
             //printf("SOL = %i ", sol->val);
 			i++;
 		}
+    	printf("[LEN] =%i\n", len);
 		add_node_list(&sol[len], dest);
 		v[dest] = false;
 		len++;

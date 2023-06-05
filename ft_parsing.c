@@ -120,7 +120,6 @@ void add_node_list(t_p **tree, int key)
     if(!element) 
         exit(1);
     element->val = key;
-    element->room = "r";
     element->next = *tree;
     *tree = element;
     element->prev = NULL;
@@ -166,12 +165,19 @@ void printTree(t_node *tree)
 
 void printTree_path(t_p *tree)
 {
-    while (tree->next != NULL)
+    while (tree != NULL)
     {
         printf("val = %i\n", tree->val);
-        printf("room = %s\n", tree->room);
+        //printf("room = %s\n", tree->room);
         tree = tree->next;
     }
+}
+
+void    init_list_struct(t_p **solv, int len)
+{
+    int i = - 1;
+    while (i++ < len)
+        solv[i] = NULL;
 }
 
 int list_size(t_p *tree)
@@ -180,11 +186,10 @@ int list_size(t_p *tree)
     while (tree != NULL)
     {
 
-        printf("treeval = %i\n",tree->val);
+        //printf("treeval = %i\n",tree->val);
         tree = tree->next;
         i++;
     }
-    printf("##OUT##\n");
     return i;
 }
 /*void printt(t_p **tree)
@@ -527,19 +532,20 @@ int nb_adj(t_matrix *g, int val)
 }
 
 
-int shortest_path_index(t_paths *p, int nb_ways, int size, int dest)
+int shortest_path_index(t_p **p, int nb_ways, int size, int dest)
 {
     int i;
     int s;
     int tmp;
 
-    i = 0;
+    i = 1;
     s = 0;
     printf("nb ways = %i\n", nb_ways);
-    tmp = ft_strlen_int(p->paths[0], dest);
+    printf("size = %i\n", dest);
+    tmp = list_size(p[0]);
     while (i < size)
     {
-        if (tmp > ft_strlen_int(p->paths[i], dest))
+        if (tmp > list_size(p[i]))
             s = i;
         i++;
     }
@@ -548,7 +554,7 @@ int shortest_path_index(t_paths *p, int nb_ways, int size, int dest)
     return s;
 }
 
-int already(int *src, int c, int dest)
+int already(t_p *src, int c)
 {
     int i= 0;
     while (src[i] != dest)
@@ -560,26 +566,26 @@ int already(int *src, int c, int dest)
     return 0;
 }
 
-bool    path_comp(int *src1, int *src2, int dest)
+bool    path_comp(t_p *src1, t_p *src2)
 {
     int i = 0;
     int j = 0;
 
-    while (src1[i] == src2[j])
+    while (src1->val == src2->val)
     {
-        j++;
-        i++;
+        src1 = src1->next;
+        src2 = src2->next;
     }
     while (src1[i] != dest)
     {
-        if (already(src2, src1[i], dest) == 1)
+        if (already(src2, src1[i]) == 1)
             return false;
         i++;
     }
     return true;
 }
 
-void all_shortest_paths(t_paths *p, int nb_ways, int size, int dest, t_p *sol)
+/*void all_shortest_paths(t_paths *p, int nb_ways, int size, int dest, t_p *sol)
 {
     int i;
     int s;
@@ -602,7 +608,7 @@ void all_shortest_paths(t_paths *p, int nb_ways, int size, int dest, t_p *sol)
         }
         i++;
     }
-}
+}*/
 
 int ants_vs_paths(int ants, int nb_ways)
 {

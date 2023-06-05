@@ -101,7 +101,7 @@ void deleteNode(t_store** head, t_store* nodeToDelete);
 int tab_len(char **tab);
 int nb_adj(t_matrix *g, int val);
 void all_shortest_paths(t_paths *p, int nb_ways, int size, int dest, t_p *sol);
-int shortest_path_index(t_paths *p, int nb_ways, int size, int dest);
+int shortest_path_index(t_p **p, int nb_ways, int size, int dest);
 int ants_vs_paths(int ants, int nb_ways);
 char *find_room_name(t_p *root, int key);
 bool    path_comp(int *src1, int *src2, int dest);
@@ -109,4 +109,5 @@ int already(int *src, int c, int dest);
 void add_node_list(t_p **tree, int key);
 //void printt(t_p **tree);
 int list_size(t_p *tree);
+void    init_list_struct(t_p **solv, int len);
 #endif

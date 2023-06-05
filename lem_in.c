@@ -50,6 +50,7 @@ int main()
     }
 	printf("NB of paths = %i\n", res);
     t_p *roads[res];
+    init_list_struct(roads, res);
     //all.paths = (int **)malloc(sizeof(int*) * res + 1);
 	res = nbpaths_2(&path, g, 0, room_num - 1, visited, roads);
     printf("[DEST] = %i\n", dest);
@@ -71,14 +72,18 @@ int main()
 	//printf("NB of paths = %i\n", res);
 
     //####### Processing ########    
+    // PEUT ETRE FAIRE UNE MATRICE DE CORRESPONDANCE POUR LES VALEUR ET LES NOM DES ROOMS
     int p = ants_vs_paths(ants, dest);
     printf("P = %i\n", p);
     printf("[ICI]\n");
-    //for (int h = 0; h < res ; h++)
-    printf("list size = %i\n", list_size(roads[1]));
-    //printTree_path(roads[0]);
+   /* for (int h = 0; h < res ; h++)
+    {
+        printf("list size = %i\n", list_size(roads[h]));
+        printTree_path(roads[h]);
+    }*/
     printf("[ICI]\n");
-    //all_shortest_paths(&all, dest, res, room_num - 1, sol);
+    int index = shortest_path_index(roads, dest, res, room_num - 1);
+    printTree_path(roads[index]);
     //####### Print Output #######
     //char *test = find_room_name(rooms, 2);
     //printf("Room Name = %s\n", test);
