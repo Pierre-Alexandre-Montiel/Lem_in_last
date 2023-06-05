@@ -51,7 +51,7 @@ int nbpaths(t_p **root, t_matrix *g, int src, int dest, bool *v, t_paths *p)
 	return nb;
 }
 
-void DFS_2(t_p **root, t_matrix *g , int src, int dest, bool *v, int *path, int pathLen, t_paths *p)
+void DFS_2(t_p **root, t_matrix *g , int src, int dest, bool *v, int *path, int pathLen, t_p **sol)
 {
 	if (src == dest)
 	{
@@ -59,23 +59,19 @@ void DFS_2(t_p **root, t_matrix *g , int src, int dest, bool *v, int *path, int 
 		int i = 0;
 		//printf("LEN == %i ", len);
 		//printf("LEN path == %i ", pathLen);
-		p->paths[len] = (int *)malloc(sizeof(int) * pathLen + 1);
+		//p->paths[len] = (int *)malloc(sizeof(int) * pathLen + 1);
 		while (i < pathLen)
 		{
-			p->paths[len][i] = path[i];
-            printf("TAB = %i ", p->paths[len][i]);
+    		printf("[LEN] =%i\n", len);
+			add_node_list(&sol[len], path[i]);
+			//p->paths[len][i] = path[i];
+            //printf("SOL = %i ", sol->val);
 			i++;
 		}
-		p->paths[len][i] = dest;
-        printf("TAB = %i ", p->paths[len][i]);
-        printf("\n");
-		//[i] = '\0';
-		//free
+		add_node_list(&sol[len], dest);
 		v[dest] = false;
 		len++;
 		nb++;
-		/*for (int j = 0; j < pathLen; j++)
-            printf("TAB = %i\n", p->paths[nb][j]);*/
 		return;
 	}
     //v[src] = true;
@@ -86,7 +82,7 @@ void DFS_2(t_p **root, t_matrix *g , int src, int dest, bool *v, int *path, int 
 	{
         if (v[i] == false && g->m[src][i] == true) 
 		{
-            DFS_2(root, g, i, dest, v, path, pathLen, p);
+            DFS_2(root, g, i, dest, v, path, pathLen, sol);
         }
     }
 	//printf("SOURCE = %i\n", src);
@@ -94,7 +90,7 @@ void DFS_2(t_p **root, t_matrix *g , int src, int dest, bool *v, int *path, int 
     pathLen--;
 }
 
-int nbpaths_2(t_p **root, t_matrix *g, int src, int dest, bool *v, t_paths *p)
+int nbpaths_2(t_p **root, t_matrix *g, int src, int dest, bool *v, t_p **sol)
 {
  	int *path = (int *)malloc(g->room_nums * sizeof(int));
     int pathLen = 0;
@@ -105,7 +101,7 @@ int nbpaths_2(t_p **root, t_matrix *g, int src, int dest, bool *v, t_paths *p)
 			//printf("SRC = %i\n", i);
 			//printf("DEST = %i\n", dest);
 			v[src] = true;
-            DFS_2(root, g, src, dest, v, path, pathLen, p);
+            DFS_2(root, g, src, dest, v, path, pathLen, sol);
 			//printf("NB value oput =		
         }
 

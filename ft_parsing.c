@@ -114,6 +114,18 @@ void addNode_path(t_p **tree, int key, char *room)
     element->prev = NULL;
 }
 
+void add_node_list(t_p **tree, int key)
+{
+    t_p *element = malloc(sizeof(t_p));
+    if(!element) 
+        exit(1);
+    element->val = key;
+    element->room = "r";
+    element->next = *tree;
+    *tree = element;
+    element->prev = NULL;
+}
+
 void addNode_store(t_store **tree, char *line)
 {
     t_store *element = malloc(sizeof(t_store));
@@ -154,13 +166,40 @@ void printTree(t_node *tree)
 
 void printTree_path(t_p *tree)
 {
-    while (tree != NULL)
+    while (tree->next != NULL)
     {
         printf("val = %i\n", tree->val);
         printf("room = %s\n", tree->room);
         tree = tree->next;
     }
 }
+
+int list_size(t_p *tree)
+{
+    int i = 0;
+    while (tree != NULL)
+    {
+
+        printf("treeval = %i\n",tree->val);
+        tree = tree->next;
+        i++;
+    }
+    printf("##OUT##\n");
+    return i;
+}
+/*void printt(t_p **tree)
+{
+    printf("CALL PRINT LIST\n");
+    while ((*tree)->next != NULL)
+    {
+        printf("BEGIN PRINT LIST\n");
+        printf("val = %i\n", (*tree)->val);
+        printf("room = %s\n", (*tree)->room);
+        tree = (*tree)->next;
+    }
+}*/
+
+
 
 void print_store(t_store *store)
 {
@@ -199,6 +238,7 @@ int isin(char *str, char c)
     }
     return 0;
 }
+
 
 int find_node(t_node* root, int key)
 {
@@ -557,7 +597,7 @@ void all_shortest_paths(t_paths *p, int nb_ways, int size, int dest, t_p *sol)
             bool res = path_comp(p->paths[i], p->paths[i + 1], dest);
             if (res == true)
             {
-                addNode_store
+                printf("SOL = %s", sol->room);
             }
         }
         i++;

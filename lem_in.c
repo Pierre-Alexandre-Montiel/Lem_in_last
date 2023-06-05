@@ -10,7 +10,7 @@ int main()
     //t_node *root = NULL;
     t_p *path = NULL;
     t_p *rooms = NULL;
-    t_p *sol = NULL;
+    //t_p *sol = NULL;
     t_store *store = NULL;
     t_paths all;
     paths_init(&all);
@@ -49,17 +49,18 @@ int main()
         exit(1);
     }
 	printf("NB of paths = %i\n", res);
-    all.paths = (int **)malloc(sizeof(int*) * res + 1);
-	res = nbpaths_2(&path, g, 0, room_num - 1, visited, &all);
+    t_p *roads[res];
+    //all.paths = (int **)malloc(sizeof(int*) * res + 1);
+	res = nbpaths_2(&path, g, 0, room_num - 1, visited, roads);
     printf("[DEST] = %i\n", dest);
     res = res / 2;
-    for (int i = 0; i < res; i++)
+    /*for (int i = 0; i < res; i++)
     {
         printf("strlen = %i \n", ft_strlen_int(all.paths[i], room_num - 1));
         for (int j = 0; j < ft_strlen_int(all.paths[i], room_num - 1); j++)
             printf("node -> %i ", all.paths[i][j]);
         printf("\n");
-    }
+    }*/
 	printf("end\n");
 	printf("NB of paths = %i\n", res);
     //printf("path val = %i\n", path->val);
@@ -72,11 +73,16 @@ int main()
     //####### Processing ########    
     int p = ants_vs_paths(ants, dest);
     printf("P = %i\n", p);
-    all_shortest_paths(&all, dest, res, room_num - 1, sol);
+    printf("[ICI]\n");
+    //for (int h = 0; h < res ; h++)
+    printf("list size = %i\n", list_size(roads[1]));
+    //printTree_path(roads[0]);
+    printf("[ICI]\n");
+    //all_shortest_paths(&all, dest, res, room_num - 1, sol);
     //####### Print Output #######
-    char *test = find_room_name(rooms, 2);
-    printf("Room Name = %s\n", test);
-    for (int i = 0; i < p; i++)
-        printf("solutions = %i\n", solve[i]);
+    //char *test = find_room_name(rooms, 2);
+    //printf("Room Name = %s\n", test);
+    /*for (int i = 0; i < p; i++)
+        printf("solutions = %i\n", solve[i]);*/
     return (0);
 }

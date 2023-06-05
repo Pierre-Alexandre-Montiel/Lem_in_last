@@ -82,8 +82,8 @@ int isin(char *str, char c);
 int find_node(t_node* root, int key);
 void DFS(t_p **root, t_matrix *g , int src, int dest, bool *v, int *path, int pathLen, t_paths *p);
 int nbpaths(t_p **root, t_matrix *g, int src, int dest, bool *v, t_paths *p);
-void DFS_2(t_p **root, t_matrix *g , int src, int dest, bool *v, int *path, int pathLen, t_paths *p);
-int nbpaths_2(t_p **root, t_matrix *g, int src, int dest, bool *v, t_paths *p);
+void DFS_2(t_p **root, t_matrix *g , int src, int dest, bool *v, int *path, int pathLen, t_p **sol);
+int nbpaths_2(t_p **root, t_matrix *g, int src, int dest, bool *v, t_p **sol);
 void find_rooms(t_node *root, char **stock, int room_num);
 void find_links(t_p *rooms, t_matrix *g, t_store *store);
 int fill_rooms_start(t_parsing *par, t_p **rooms, t_store *store);
@@ -106,4 +106,7 @@ int ants_vs_paths(int ants, int nb_ways);
 char *find_room_name(t_p *root, int key);
 bool    path_comp(int *src1, int *src2, int dest);
 int already(int *src, int c, int dest);
+void add_node_list(t_p **tree, int key);
+//void printt(t_p **tree);
+int list_size(t_p *tree);
 #endif
