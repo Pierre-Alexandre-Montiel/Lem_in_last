@@ -167,10 +167,11 @@ void printTree_path(t_p *tree)
 {
     while (tree != NULL)
     {
-        printf("val = %i\n", tree->val);
+        printf("%i -> ", tree->val);
         //printf("room = %s\n", tree->room);
         tree = tree->next;
     }
+    printf("\n");
 }
 
 void    init_list_struct(t_p **solv, int len)
@@ -503,10 +504,9 @@ int nb_ants(t_store *store, t_parsing *par)
     store = store->next;*/
     while (store != NULL)
     {
-        //char **tmp = ft_split(store->line, ' ');
-        printf("LINE len = %i\n", ft_strlen(store->line));
+        printf("TAB LEN = %i\n", tab_len(ft_split(store->line, ' ')));
         printf("LINE = %s\n", store->line);
-        if (ft_strlen(store->line) == 1 && isin(store->line, '#') == 0)
+        if (tab_len(ft_split(store->line, ' ')) == 1 && tab_len(ft_split(store->line, '-')) == 1 && isin(store->line, '#') == 0)
         {
             ants = atoi(store->line);
             deleteNode(&store, store);    
@@ -541,9 +541,10 @@ int shortest_path_index(t_p **p, int nb_ways, int size, int dest)
     i = 1;
     s = 0;
     printf("nb ways = %i\n", nb_ways);
-    printf("size = %i\n", dest);
+    printf("dest = %i\n", dest);
+    printf("size = %i\n", size);
     tmp = list_size(p[0]);
-    while (i < size)
+    while (i < nb_ways)
     {
         if (tmp > list_size(p[i]))
             s = i;
@@ -556,36 +557,41 @@ int shortest_path_index(t_p **p, int nb_ways, int size, int dest)
 
 int already(t_p *src, int c)
 {
-    int i= 0;
-    while (src[i] != dest)
+    while (src->next != NULL)
+        src = src->next;
+    while (src->prev != NULL)
     {
-        if (src[i] == c)
+        if (src->val == c)
             return 1;
-        i++;
+        src = src->prev;
     }
     return 0;
 }
 
 bool    path_comp(t_p *src1, t_p *src2)
 {
-    int i = 0;
-    int j = 0;
-
-    while (src1->val == src2->val)
-    {
+    while (src1->next != NULL)
         src1 = src1->next;
+    while (src2->next != NULL)
         src2 = src2->next;
-    }
-    while (src1[i] != dest)
+
+    /*while (src1->val == src2->val)
+    {    
+        //printf("SRC1 -> %i\n", src1->val);
+        //printf("SRC2 -> %i\n", src2->val);
+        src1 = src1->prev;
+        src2 = src2->prev;
+    }*/        
+    while (src1->prev != NULL)
     {
-        if (already(src2, src1[i]) == 1)
+        if (already(src2, src1->val) == 1)
             return false;
-        i++;
+        src1 = src1->prev;
     }
     return true;
 }
 
-/*void all_shortest_paths(t_paths *p, int nb_ways, int size, int dest, t_p *sol)
+t_p *all_shortest_paths(t_p **p, int nb_ways, int size, int dest)
 {
     int i;
     int s;
@@ -594,25 +600,78 @@ bool    path_comp(t_p *src1, t_p *src2)
     i = 0;
     s = 0;
     index = 0;
-
+    t_p *out = NULL;
     s = shortest_path_index(p, nb_ways, size, dest);
-    while (i < size)
+    add_node_list(&out, s);
+    printf("size = %i\n", size);
+    while (i < nb_ways)
     {
         if (i != s)
         {
-            bool res = path_comp(p->paths[i], p->paths[i + 1], dest);
+            bool res = path_comp(p[s], p[i]);
             if (res == true)
-            {
-                printf("SOL = %s", sol->room);
-            }
+                add_node_list(&out, i);
         }
         i++;
     }
-}*/
+    return out;
+}
 
 int ants_vs_paths(int ants, int nb_ways)
 {
-    if (ants % nb_ways == 0)
+    if (ants == nb_ways)
         return ants;
-    return -1;
+    if (ants < nb_ways)
+        return ants;
+    if (ants > nb_ways)
+        return nb_ways;
+    else
+        return -1;
 }
+
+int   max_len(t_p **p, t_p **out)
+{
+    int tmp;
+
+    tmp = 0;
+    printf("OUT VAL = %i\n", (*out)->val);
+    while ((*out) != NULL)
+    {
+        printf("LIST SIZE = %i\n", list_size(p[(*out)->val]));
+        if (tmp < list_size(p[(*out)->val]))
+            tmp = list_size(p[(*out)->val]);
+        (*out) = (*out)->next;
+    }
+    return tmp;
+}
+
+void reverse(t_p **head_ref)
+{
+    t_p *prev = NULL;
+    t_p *current = *head_ref;
+    t_p *next = NULL;
+    while (current != NULL) {
+        // Store next
+        next = current->next;
+        // Reverse current node's pointer
+        current->next = prev;
+        // Move pointers one position ahead.
+        prev = current;
+        current = next;
+    }
+    *head_ref = prev;
+}
+
+void    reverse_paths(t_p **p, t_p *out)
+{
+    while(out != NULL)
+    {
+        reverse(&p[out->val]);   
+        out = out->next;
+    }
+}
+
+/*void    print_output(t_p **p, int ants, t_p *out)
+{
+     
+}*/

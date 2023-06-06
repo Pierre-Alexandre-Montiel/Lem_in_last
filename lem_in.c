@@ -66,27 +66,41 @@ int main()
 	printf("NB of paths = %i\n", res);
     //printf("path val = %i\n", path->val);
 	printf("#########\n");
-    printTree_path(rooms);
     //int nb_paths = ants / res;
 	//printf("Rapport Ants / Rooms = %i\n", nb_paths);
 	//printf("NB of paths = %i\n", res);
 
     //####### Processing ########    
     // PEUT ETRE FAIRE UNE MATRICE DE CORRESPONDANCE POUR LES VALEUR ET LES NOM DES ROOMS
-    int p = ants_vs_paths(ants, dest);
+
+    //int index = shortest_path_index(roads, dest, res, room_num - 1);
+   // printTree_path(roads[index]);
+    t_p *out = all_shortest_paths(roads, dest, res, room_num - 1);
+    int nb_sol = list_size(out);    
+    int p = ants_vs_paths(ants, nb_sol);
     printf("P = %i\n", p);
-    printf("[ICI]\n");
-   /* for (int h = 0; h < res ; h++)
-    {
-        printf("list size = %i\n", list_size(roads[h]));
-        printTree_path(roads[h]);
-    }*/
-    printf("[ICI]\n");
-    int index = shortest_path_index(roads, dest, res, room_num - 1);
-    printTree_path(roads[index]);
+    printf("NB Solutions paths = %i\n", nb_sol);
+    printf("Good Index Paths = ");
+    printTree_path(out);
+    printf("\n");
+    reverse_paths(roads, out);
     //####### Print Output #######
-    //char *test = find_room_name(rooms, 2);
-    //printf("Room Name = %s\n", test);
+    //char *test = find_room_name(rooms, roads[0]->val);
+    //printf("TEST = %s\n", test);
+    int max = max_len(roads, &out);
+    printf("MAX = %i\n", max);
+    for (int i = 0; i < max; i++)
+    {
+        for (int j = 0; j < p; j++)
+        {
+                if (roads[j] != NULL)
+                {
+                    printf("L%i-%i ", j + 1, roads[j]->val);
+                    roads[j] = roads[j]->next;
+                }
+        }
+        printf("\n");
+    }
     /*for (int i = 0; i < p; i++)
         printf("solutions = %i\n", solve[i]);*/
     return (0);
